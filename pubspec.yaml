@@ -40,6 +40,9 @@ dependencies:
    # for splash screen
   flutter_native_splash:  2.3.10
 
+  # for making the app responsive
+  flutter_screenutil: ^5.9.0
+
 
 dev_dependencies:
   flutter_test:
