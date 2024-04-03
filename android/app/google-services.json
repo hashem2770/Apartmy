@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015665773186",
+    "project_id": "apartmy-1782c",
+    "storage_bucket": "apartmy-1782c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015665773186:android:00df489d2701142232829b",
+        "android_client_info": {
+          "package_name": "com.hashem.apartmy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPN-2u1Aov-eRRkMM409bHfJN1fP0Xskw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
