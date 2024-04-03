@@ -15,11 +15,18 @@ void main() async {
           messagingSenderId: "1015665773186",
           projectId: "apartmy-1782c",
         ))
-      : SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      : await Firebase.initializeApp();
 
-  runApp(
-    const Apartmy(),
-  );
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]).then((_) {
+    runApp(
+      const Apartmy(),
+    );
+  });
+
+
 }
 
 class Apartmy extends StatelessWidget {
