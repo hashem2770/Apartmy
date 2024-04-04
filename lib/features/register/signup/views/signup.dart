@@ -2,6 +2,7 @@ import 'package:apartmy/core/component/elevated_button.dart';
 import 'package:apartmy/features/register/widgets/register_by_social_media.dart';
 import 'package:apartmy/features/register/widgets/signup_textfields.dart';
 import 'package:apartmy/features/register/widgets/welcoming_message.dart';
+import 'package:apartmy/core/component/custom_text_button.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatelessWidget {
@@ -45,17 +46,9 @@ class SignUp extends StatelessWidget {
                   'Already have an account? ',
                   style: TextStyle(color: Colors.black),
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    'Log in',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
+                CustomTextButton(
+                  label: 'Log In',
+                  onTap: () {},
                 ),
               ],
             ),
