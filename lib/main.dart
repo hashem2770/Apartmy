@@ -1,4 +1,4 @@
-import 'package:apartmy/features/starter_point.dart';
+import 'package:apartmy/starter_point.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -19,11 +19,11 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
-  ]).then((_) {
-    runApp(
-      const Apartmy(),
-    );
-  });
-
-
+  ]).then(
+    (_) {
+      runApp(
+        const Apartmy(),
+      );
+    },
+  );
 }
