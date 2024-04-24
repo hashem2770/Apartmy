@@ -42,6 +42,9 @@ dependencies:
   # for making the app responsive
   flutter_screenutil: ^5.9.0
 
+  # for navigation and deep linking
+  go_router: 13.2.3
+
 
 
 # dependencies while developing
