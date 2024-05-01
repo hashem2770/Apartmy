@@ -12,13 +12,15 @@ final router = GoRouter(
       path: '/',
       name: RoutesNames.home,
       builder: (context, state) => HomeView(),
-      routes: [
-        GoRoute(
-          path: 'adding_block',
-          name: RoutesNames.addingBlock,
-          builder: (context, state) => AddingBlockView(),
-        ),
-      ],
+
+    ),
+    GoRoute(
+      path: '/adding_Block/:name/:floors',
+      name: RoutesNames.addingBlock,
+      builder: (context, state) => AddingBlockView(
+        name: state.pathParameters['name'],
+        floors: int.parse(state.pathParameters['floors']?.toString() ?? '0'),
+      ),
     ),
   ],
 );

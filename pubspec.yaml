@@ -43,7 +43,7 @@ dependencies:
   flutter_screenutil: ^5.9.0
 
   # for navigation and deep linking
-  go_router: 13.2.3
+  go_router: 13.2.4
 
 
 

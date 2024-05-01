@@ -1,4 +1,8 @@
+import 'package:apartmy/core/utils/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/helpers/snack_bars/insufficient_snack_bar.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -36,15 +40,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              name ?? 'No name yet',
-              style: TextStyle(fontSize: 40),
-            ),
-            Text(
-              '${floorsCount ?? 'N/V'}',
-              style: TextStyle(fontSize: 40),
-            ),
-            SizedBox(height: 8),
             IconButton.outlined(
               iconSize: 40,
               onPressed: () async {
@@ -127,12 +122,22 @@ class _HomeViewBodyState extends State<HomeViewBody> {
       },
     );
   }
+
   void create() {
     if (keyForm.currentState!.validate()) {
       Navigator.of(context).pop([nameController.text, floorsController.text]);
+      context.goNamed(
+        RoutesNames.addingBlock,
+        pathParameters: {
+          'name': nameController.text,
+          'floors': floorsController.text
+        },
+      );
     }
-  }
 
+    nameController.clear();
+    floorsController.clear();
+  }
 
   void cancel() {
     Navigator.of(context).pop();
@@ -143,26 +148,5 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     if (floors == null || floors <= 1) {
       return insufficientInfoSnackBar(context);
     }
-  }
-
-  // I think it is useless for now
-  void insufficientInfoSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text('Insufficient Number of Floors'),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(10),
-          action: SnackBarAction(
-            label: 'Dismiss',
-            textColor: Colors.white,
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          )),
-    );
-    nameController.clear();
-    floorsController.clear();
   }
 }
