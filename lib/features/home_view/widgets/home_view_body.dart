@@ -10,8 +10,9 @@ class HomeViewBody extends StatefulWidget {
 class _HomeViewBodyState extends State<HomeViewBody> {
   late TextEditingController nameController;
   late TextEditingController floorsController;
+  final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   String? name = '';
-  int? floors = 0;
+  int? floorsCount;
 
   @override
   void initState() {
@@ -36,21 +37,24 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              name??'No name yet',
+              name ?? 'No name yet',
               style: TextStyle(fontSize: 40),
             ),
             Text(
-              floors.toString(),
+              '${floorsCount ?? 'N/V'}',
               style: TextStyle(fontSize: 40),
             ),
+            SizedBox(height: 8),
             IconButton.outlined(
               iconSize: 40,
               onPressed: () async {
-                final nameAndFloors = await onDialog(context);
-                if (nameAndFloors == null) return;
+                final List? nameAndFloors = await onDialog(context);
+                name = nameAndFloors?[0] ?? 'N/V';
+                floorsCount = int.tryParse(nameAndFloors?[1] ?? 'N/V');
+                checkFloorsValues(floors: floorsCount, context: context);
                 setState(() {
-                  this.name = nameAndFloors[0];
-                  this.floors = int.parse(nameAndFloors[1]);
+                  this.name = name;
+                  this.floorsCount = floorsCount;
                 });
               },
               icon: Icon(Icons.home),
@@ -63,54 +67,102 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     );
   }
 
-  Future onDialog(BuildContext context) {
-    return showDialog(
+  Future<List?> onDialog(BuildContext context) {
+    return showDialog<List>(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Create a new block'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                keyboardType: TextInputType.name,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Block Name',
-                ),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                  keyboardType: TextInputType.number,
-                  controller: floorsController,
+          content: Form(
+            key: keyForm,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  // I think it means when you press enter it will hide keyboard
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please provide a block name';
+                    }
+                    return null;
+                  },
+                  controller: nameController,
+                  autofocus: true,
+                  textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    hintText: 'Number of floors',
-                  )),
-            ],
+                    hintText: 'Block Name',
+                  ),
+                ),
+                SizedBox(height: 8),
+                TextFormField(
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          int.parse(value) <= 1) {
+                        return 'Please provide a number of floors';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    controller: floorsController,
+                    decoration: InputDecoration(
+                      hintText: 'Number of floors',
+                    )),
+              ],
+            ),
           ),
           actions: [
             TextButton(
-              onPressed: submit,
-              child: Text('Create'),
-            ),
-            TextButton(
               onPressed: cancel,
               child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: create,
+              child: Text('Create'),
             ),
           ],
         );
       },
     );
   }
-
-  void submit() {
-    Navigator.of(context).pop([nameController.text, floorsController.text]);
-    nameController.clear();
-    floorsController.clear();
+  void create() {
+    if (keyForm.currentState!.validate()) {
+      Navigator.of(context).pop([nameController.text, floorsController.text]);
+    }
   }
+
 
   void cancel() {
     Navigator.of(context).pop();
+  }
+
+  void checkFloorsValues(
+      {required int? floors, required BuildContext context}) {
+    if (floors == null || floors <= 1) {
+      return insufficientInfoSnackBar(context);
+    }
+  }
+
+  // I think it is useless for now
+  void insufficientInfoSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text('Insufficient Number of Floors'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(10),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            textColor: Colors.white,
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+          )),
+    );
+    nameController.clear();
+    floorsController.clear();
   }
 }
