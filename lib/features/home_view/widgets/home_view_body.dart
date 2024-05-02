@@ -1,8 +1,7 @@
-import 'package:apartmy/core/utils/routes_names.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../core/helpers/snack_bars/insufficient_snack_bar.dart';
+import 'package:apartmy/core/utils/routes_names.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -32,7 +31,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     super.dispose();
   }
 
-//todo: remove displaying of number of floors & name and navigate to adding block
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +44,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 final List? nameAndFloors = await onDialog(context);
                 name = nameAndFloors?[0] ?? 'N/V';
                 floorsCount = int.tryParse(nameAndFloors?[1] ?? 'N/V');
-                checkFloorsValues(floors: floorsCount, context: context);
                 setState(() {
                   this.name = name;
                   this.floorsCount = floorsCount;
@@ -54,8 +51,9 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               },
               icon: Icon(Icons.home),
             ),
-            SizedBox(height: 8),
-            Text('Create a new block'),
+            SizedBox(height: 18),
+            Text('Create a New Block',
+                style: Theme.of(context).textTheme.titleLarge),
           ],
         ),
       ),
@@ -141,12 +139,5 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
   void cancel() {
     Navigator.of(context).pop();
-  }
-
-  void checkFloorsValues(
-      {required int? floors, required BuildContext context}) {
-    if (floors == null || floors <= 1) {
-      return insufficientInfoSnackBar(context);
-    }
   }
 }
