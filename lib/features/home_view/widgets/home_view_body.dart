@@ -79,6 +79,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     if (value == null || value.isEmpty) {
                       return 'Please provide a block name';
                     }
+                    // return null if the input is valid
                     return null;
                   },
                   controller: nameController,
@@ -96,6 +97,14 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                           int.parse(value) <= 1) {
                         return 'Please provide a number of floors';
                       }
+                      // make sure the input is a number
+                      //however, when I use the PC to test it doesn't work
+                      //I know user could never get this error as the keyboard is numbers only
+                      final number = int.tryParse(value);
+                      if (number == null) {
+                        return 'Please provide a valid number';
+                      }
+                      // return null if the input is valid
                       return null;
                     },
                     keyboardType: TextInputType.number,
@@ -124,7 +133,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   void create() {
     if (keyForm.currentState!.validate()) {
       Navigator.of(context).pop([nameController.text, floorsController.text]);
-      context.goNamed(
+      context.pushNamed(
         RoutesNames.addingBlock,
         pathParameters: {
           'name': nameController.text,
