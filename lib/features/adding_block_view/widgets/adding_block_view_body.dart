@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 
-class AddingBlockViewBody extends StatelessWidget {
-  const AddingBlockViewBody({super.key,required this.name,required this.floors});
+import '../../../models/tenant.dart';
 
-  final String? name;
-  final int? floors;
+class AddingBlockViewBody extends StatelessWidget {
+  const AddingBlockViewBody({super.key, required this.tenantsDetails});
+
+  final List<Tenant> tenantsDetails;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(name ?? 'N/V'),
-          Text('${floors ?? 'N/V'} '),
-        ],
+      child: ListView.builder(
+        padding: const EdgeInsets.all(80),
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              Text(tenantsDetails[index].name),
+              SizedBox(width: 20),
+              Text(tenantsDetails[index].rent.toString()),
+              SizedBox(width: 20),
+              Text(tenantsDetails[index].floorsCount.toString()),
+            ],
+          );
+        },
+        itemCount: tenantsDetails.length,
       ),
     );
   }
