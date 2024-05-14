@@ -9,22 +9,51 @@ class AddingBlockViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ListView.builder(
-        padding: const EdgeInsets.all(80),
-        itemBuilder: (context, index) {
-          return Row(
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          color: Colors.greenAccent[200],
+          margin: const EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(tenantsDetails[index].name),
-              SizedBox(width: 20),
-              Text(tenantsDetails[index].rent.toString()),
-              SizedBox(width: 20),
-              Text(tenantsDetails[index].floorsCount.toString()),
+              Text('Floor', style: labelStyle()),
+              Text('Name', style: labelStyle()),
+              Text('Rent', style: labelStyle()),
             ],
-          );
-        },
-        itemCount: tenantsDetails.length,
-      ),
+          ),
+        ),
+        SizedBox(height: 18),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(height: 18),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(tenantsDetails[index].floorsCount.toString()),
+                      SizedBox(width: 20),
+                      Text(tenantsDetails[index].name.toString()),
+                      SizedBox(width: 20),
+                      Text(tenantsDetails[index].rent.toString()),
+                    ],
+                  ),
+                ],
+              );
+            },
+            itemCount: tenantsDetails.length,
+          ),
+        ),
+      ],
     );
+  }
+
+  TextStyle labelStyle() {
+    return TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
   }
 }

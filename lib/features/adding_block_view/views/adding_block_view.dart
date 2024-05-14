@@ -19,7 +19,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
   late TextEditingController nameController;
   late TextEditingController rentController;
   List<Tenant> tenants = [
-    Tenant(name: 'Test', floorsCount: 0, rent: 0),
+    //Tenant(name: 'Test', floorsCount: 0, rent: 0),
   ];
   String? name = '';
   int floorsCount = 0;
