@@ -9,6 +9,8 @@ class Tenant {
     required this.rent,
   });
 
-
+  static List<Tenant> tenants = [
+    //Tenant(name: 'Test', floorsCount: 0, rent: 0),
+  ];
 
 }

@@ -18,9 +18,8 @@ class _AddingBlockViewState extends State<AddingBlockView> {
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   late TextEditingController nameController;
   late TextEditingController rentController;
-  List<Tenant> tenants = [
-    //Tenant(name: 'Test', floorsCount: 0, rent: 0),
-  ];
+
+
   String? name = '';
   int floorsCount = 0;
 
@@ -51,10 +50,11 @@ class _AddingBlockViewState extends State<AddingBlockView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: buildAppBar(),
       body: AddingBlockViewBody(
-        tenantsDetails: tenants,
+        tenantsDetails: Tenant.tenants,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -75,7 +75,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
         CustomTextButton(
           label: 'Save',
           onTap: () {
-            //todo: save data here and go back
+           Navigator.of(context).pop();
           },
         ),
       ],
@@ -161,7 +161,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
 
   void create() {
     if (keyForm.currentState!.validate()) {
-      tenants.add(
+      Tenant.tenants.add(
         Tenant(
           name: nameController.text,
           floorsCount: floorsCount,

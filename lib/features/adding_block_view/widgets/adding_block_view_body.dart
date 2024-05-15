@@ -26,9 +26,8 @@ class AddingBlockViewBody extends StatelessWidget {
         ),
         SizedBox(height: 18),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(height: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 34),
+          child: ListView.builder(
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Column(
@@ -36,13 +35,19 @@ class AddingBlockViewBody extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(tenantsDetails[index].floorsCount.toString()),
+                      Text(
+                        tenantsDetails[index].floorsCount.toString(),
+                      ),
                       SizedBox(width: 20),
-                      Text(tenantsDetails[index].name.toString()),
+                      Text(
+                        tenantsDetails[index].name.toString().toUpperCase(),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       SizedBox(width: 20),
                       Text(tenantsDetails[index].rent.toString()),
                     ],
                   ),
+
                 ],
               );
             },

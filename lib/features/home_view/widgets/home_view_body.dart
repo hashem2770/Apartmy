@@ -1,3 +1,4 @@
+import 'package:apartmy/models/tenant.dart';
 import 'package:flutter/material.dart';
 
 import 'package:apartmy/core/utils/routes_names.dart';
@@ -16,6 +17,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   String? name = '';
   int? floorsCount;
+  bool isPayed = true;
 
   @override
   void initState() {
@@ -34,7 +36,14 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      // todo: need to refactor the entire app and apply BLoC
+      body: checkTenantInput(Tenant.tenants),
+    );
+  }
+
+  checkTenantInput(List<Tenant> tenants) {
+    if (tenants.isEmpty) {
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -56,6 +65,66 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 style: Theme.of(context).textTheme.titleLarge),
           ],
         ),
+      );
+    }
+    return buildActiveHomeView(Tenant.tenants);
+  }
+
+  Widget buildActiveHomeView(List<Tenant> tenants) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    tenants[index].floorsCount.toString(),
+                    style: TextStyle(
+                        decoration: isPayed
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    tenants[index].name.toString().toUpperCase(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: isPayed
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    tenants[index].rent.toString(),
+                    style: TextStyle(
+                        decoration: isPayed
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none),
+                  ),
+                  Checkbox(
+                    value: isPayed,
+                    onChanged: (value) {
+                      if (value == true) {
+                        setState(() {
+                          isPayed = !isPayed;
+                        });
+                      }else{
+                        setState(() {
+                          isPayed = !isPayed;
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
+            ],
+          );
+        },
+        itemCount: tenants.length,
       ),
     );
   }
