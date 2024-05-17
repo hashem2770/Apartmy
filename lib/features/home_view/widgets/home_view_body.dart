@@ -36,7 +36,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // todo: need to refactor the entire app and apply BLoC
+      // todo: need to refactor the entire app and apply BLoC or Provider
       body: checkTenantInput(Tenant.tenants),
     );
   }
@@ -78,6 +78,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         itemBuilder: (context, index) {
           return Column(
             children: [
+              //todo: need to extract this Row into a widget
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -141,6 +142,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                //todo: need to extract this TextFormField into a widget
                 TextFormField(
                   // I think it means when you press enter it will hide keyboard
                   onTap: () => FocusScope.of(context).unfocus(),

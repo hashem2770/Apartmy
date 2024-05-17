@@ -94,6 +94,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                //todo: extract this into a widget
                 TextFormField(
                   // I think it means when you press enter it will hide keyboard
                   onTap: () => FocusScope.of(context).unfocus(),
@@ -112,6 +113,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
                   ),
                 ),
                 SizedBox(height: 12),
+                //todo: extract this into a widget
                 TextFormField(
                   // I think it means when you press enter it will hide keyboard
                   onTap: () => FocusScope.of(context).unfocus(),
