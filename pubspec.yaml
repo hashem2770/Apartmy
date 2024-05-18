@@ -45,6 +45,8 @@ dependencies:
   # for navigation and deep linking
   go_router: 13.2.4
 
+  provider: ^6.1.1
+
 
 
 # dependencies while developing

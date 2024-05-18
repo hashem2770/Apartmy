@@ -168,6 +168,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
           name: nameController.text,
           floorsCount: floorsCount,
           rent: int.parse(rentController.text),
+          isPayed: false,
         ),
       );
     }

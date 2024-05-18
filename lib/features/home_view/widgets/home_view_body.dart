@@ -17,7 +17,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   String? name = '';
   int? floorsCount;
-  bool isPayed = true;
 
   @override
   void initState() {
@@ -85,7 +84,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   Text(
                     tenants[index].floorsCount.toString(),
                     style: TextStyle(
-                        decoration: isPayed
+                        decoration: tenants[index].isPayed
                             ? TextDecoration.lineThrough
                             : TextDecoration.none),
                   ),
@@ -94,7 +93,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     tenants[index].name.toString().toUpperCase(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        decoration: isPayed
+                        decoration: tenants[index].isPayed
                             ? TextDecoration.lineThrough
                             : TextDecoration.none),
                   ),
@@ -102,20 +101,20 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   Text(
                     tenants[index].rent.toString(),
                     style: TextStyle(
-                        decoration: isPayed
+                        decoration: tenants[index].isPayed
                             ? TextDecoration.lineThrough
                             : TextDecoration.none),
                   ),
                   Checkbox(
-                    value: isPayed,
+                    value: tenants[index].isPayed,
                     onChanged: (value) {
                       if (value == true) {
                         setState(() {
-                          isPayed = !isPayed;
+                          tenants[index].isPayed = !tenants[index].isPayed;
                         });
                       }else{
                         setState(() {
-                          isPayed = !isPayed;
+                          tenants[index].isPayed = !tenants[index].isPayed;
                         });
                       }
                     },
