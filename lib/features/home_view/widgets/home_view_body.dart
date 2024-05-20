@@ -1,8 +1,10 @@
+import 'package:apartmy/features/managers/tenants_provider.dart';
 import 'package:apartmy/models/tenant.dart';
 import 'package:flutter/material.dart';
 
 import 'package:apartmy/core/utils/routes_names.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -15,8 +17,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   late TextEditingController nameController;
   late TextEditingController floorsController;
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
-  String? name = '';
-  int? floorsCount;
 
   @override
   void initState() {
@@ -34,14 +34,21 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // todo: need to refactor the entire app and apply BLoC or Provider
-      body: checkTenantInput(Tenant.tenants),
+    return Consumer<TenantProvider>(
+      builder: (
+        BuildContext context,
+        TenantProvider tenantsProvider,
+        Widget? child,
+      ) =>
+          Scaffold(
+        body: checkTenantInput(tenantsProvider),
+      ),
     );
   }
 
-  checkTenantInput(List<Tenant> tenants) {
-    if (tenants.isEmpty) {
+  checkTenantInput(TenantProvider tenantsProvider) {
+    // appears only in the first time of the app lifecycle
+    if (tenantsProvider.tenants.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,24 +56,21 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             IconButton.outlined(
               iconSize: 40,
               onPressed: () async {
-                final List? nameAndFloors = await onDialog(context);
-                name = nameAndFloors?[0] ?? 'N/V';
-                floorsCount = int.tryParse(nameAndFloors?[1] ?? 'N/V');
-                setState(() {
-                  this.name = name;
-                  this.floorsCount = floorsCount;
-                });
+                await onDialog(context);
               },
               icon: Icon(Icons.home),
             ),
             SizedBox(height: 18),
-            Text('Create a New Block',
-                style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              'Create a New Block',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ],
         ),
       );
     }
-    return buildActiveHomeView(Tenant.tenants);
+    // aka Main View ; appears after adding the tenants
+    return buildActiveHomeView(tenantsProvider.tenants);
   }
 
   Widget buildActiveHomeView(List<Tenant> tenants) {
@@ -90,7 +94,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   ),
                   SizedBox(width: 20),
                   Text(
-                    tenants[index].name.toString().toUpperCase(),
+                    tenants[index].name.toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         decoration: tenants[index].isPayed
@@ -112,7 +116,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                         setState(() {
                           tenants[index].isPayed = !tenants[index].isPayed;
                         });
-                      }else{
+                      } else {
                         setState(() {
                           tenants[index].isPayed = !tenants[index].isPayed;
                         });

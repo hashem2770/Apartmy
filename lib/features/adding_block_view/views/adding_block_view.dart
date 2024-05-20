@@ -1,35 +1,42 @@
 import 'package:apartmy/core/component/custom_text_button.dart';
 import 'package:apartmy/features/adding_block_view/widgets/adding_block_view_body.dart';
+import 'package:apartmy/features/managers/tenants_provider.dart';
 import 'package:apartmy/models/tenant.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddingBlockView extends StatefulWidget {
-  const AddingBlockView({super.key, required this.name, required this.floors});
+  const AddingBlockView({
+    super.key,
+    required this.blockName,
+    required this.blockFloorsCount,
+  });
 
-  final String name;
-  final int floors;
+  // now I only use them for appbar name and dropdown menu
+  final String blockName;
+  final int blockFloorsCount;
 
   @override
   State<AddingBlockView> createState() => _AddingBlockViewState();
 }
 
 class _AddingBlockViewState extends State<AddingBlockView> {
-  // todo: save details in List and pass it bodyView to display it
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   late TextEditingController nameController;
   late TextEditingController rentController;
 
-
-  String? name = '';
+  //String? name = '';
   int floorsCount = 0;
 
   List<DropdownMenuEntry> createFloors(int floors) {
     List<DropdownMenuEntry> floorsCount = [];
     for (int i = 1; i < floors; i++) {
-      floorsCount.add(DropdownMenuEntry(
-        label: 'Floor $i',
-        value: i,
-      ));
+      floorsCount.add(
+        DropdownMenuEntry(
+          label: 'Floor $i',
+          value: i,
+        ),
+      );
     }
     return floorsCount;
   }
@@ -50,39 +57,38 @@ class _AddingBlockViewState extends State<AddingBlockView> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: AddingBlockViewBody(
-        tenantsDetails: Tenant.tenants,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-           await onDialog(context);
-          // I don't know what this line suppose to do but it works
-          //name = tenantsDetails?[0] ?? 'N/V';
-        },
-        child: const Icon(Icons.add),
+    return Consumer<TenantProvider>(
+      builder: (context, TenantProvider tenantProvider, child) => Scaffold(
+        appBar: buildAppBar(),
+        body: AddingBlockViewBody(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await onDialog(context, tenantProvider);
+            // I don't know what this line suppose to do but it works
+            //name = tenantsDetails?[0] ?? 'N/V';
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
 
   AppBar buildAppBar() {
     return AppBar(
-      title: Text('${widget.name}'),
+      title: Text('${widget.blockName}'),
       centerTitle: true,
       actions: [
         CustomTextButton(
           label: 'Save',
           onTap: () {
-           Navigator.of(context).pop();
+            Navigator.of(context).pop();
           },
         ),
       ],
     );
   }
 
-  Future<List?> onDialog(BuildContext context) {
+  Future<List?> onDialog(BuildContext context, TenantProvider tenantProvider) {
     return showDialog<List>(
       context: context,
       builder: (context) {
@@ -133,15 +139,18 @@ class _AddingBlockViewState extends State<AddingBlockView> {
                 ),
                 SizedBox(height: 24),
                 DropdownMenu(
+                  //todo: unfocus keyboard when it pressed
                   hintText: 'Floor Number',
                   onSelected: (value) {
+                    // do I need to make provider !?
                     setState(() {
                       floorsCount = value;
                     });
 
                     print(value);
                   },
-                  dropdownMenuEntries: createFloors(widget.floors + 1),
+                  dropdownMenuEntries:
+                      createFloors(widget.blockFloorsCount + 1),
                 ),
               ],
             ),
@@ -152,7 +161,7 @@ class _AddingBlockViewState extends State<AddingBlockView> {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: create,
+              onPressed: () => create(tenantProvider),
               child: Text('Create'),
             ),
           ],
@@ -161,9 +170,9 @@ class _AddingBlockViewState extends State<AddingBlockView> {
     );
   }
 
-  void create() {
+  create(TenantProvider tenantProvider) {
     if (keyForm.currentState!.validate()) {
-      Tenant.tenants.add(
+      tenantProvider.addTenant(
         Tenant(
           name: nameController.text,
           floorsCount: floorsCount,
@@ -172,10 +181,9 @@ class _AddingBlockViewState extends State<AddingBlockView> {
         ),
       );
     }
-
     nameController.clear();
     rentController.clear();
-    setState(() {});
+    //setState(() {});
     Navigator.of(context).pop();
   }
 

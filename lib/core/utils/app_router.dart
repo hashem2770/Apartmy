@@ -17,8 +17,8 @@ final router = GoRouter(
       path: '/adding_Block/:name/:floors',
       name: RoutesNames.addingBlock,
       builder: (context, state) => AddingBlockView(
-        name: state.pathParameters['name']?.toString() ?? 'N/V',
-        floors: int.parse(state.pathParameters['floors']?.toString() ?? '0'),
+        blockName: state.pathParameters['name']?.toString() ?? 'N/V',
+        blockFloorsCount: int.parse(state.pathParameters['floors']?.toString() ?? '0'),
       ),
     ),
   ],
