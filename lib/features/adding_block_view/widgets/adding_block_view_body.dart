@@ -50,7 +50,7 @@ class AddingBlockViewBody extends StatelessWidget {
                         ),
                         SizedBox(width: 20),
                         Text(
-                          tenant.name.toString().toUpperCase(),
+                          tenant.name.toString(),
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 20),
