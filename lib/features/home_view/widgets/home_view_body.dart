@@ -35,14 +35,13 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TenantProvider>(
-      builder: (
-        BuildContext context,
-        TenantProvider tenantsProvider,
-        Widget? child,
-      ) =>
-          Scaffold(
-        body: checkTenantInput(tenantsProvider),
-      ),
+      builder: (BuildContext context, TenantProvider tenantsProvider,
+          Widget? child) {
+        return Scaffold(
+          body: checkTenantInput(tenantsProvider),
+
+        );
+      },
     );
   }
 

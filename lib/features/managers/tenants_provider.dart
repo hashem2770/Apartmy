@@ -16,4 +16,11 @@ class TenantProvider extends ChangeNotifier{
     tenants.remove(tenant);
     notifyListeners();
   }
+
+  void resetPaying() {
+    tenants.forEach((tenant) {
+      tenant.isPayed = false;
+    });
+    notifyListeners();
+  }
 }
