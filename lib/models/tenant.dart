@@ -11,8 +11,5 @@ class Tenant {
     required this.isPayed,
   });
 
-  static List<Tenant> tenants = [
-    //Tenant(name: 'Test', floorsCount: 0, rent: 0),
-  ];
 
 }
